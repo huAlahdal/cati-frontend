@@ -1,0 +1,322 @@
+<ngx-spinner>
+  <h3 style="color: white;">انتظر....</h3>
+</ngx-spinner>
+<ngx-toasta [position]="'top-right'"></ngx-toasta>
+<div id="centro" class="col-md-11">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card card-user">
+        <div class="image">
+          <img src="assets/img/damir-bosnjak.jpg" alt="...">
+        </div>
+        <div class="card-body" style="min-height:auto">
+          <div class="author">
+            <a href="#">
+              <img class="avatar border-gray" src="assets/img/mike.jpg" alt="...">
+              <h5 class="title">{{username}}</h5>
+            </a>
+            <p class="description">
+
+            </p>
+          </div>
+          <p class="description text-center">
+
+          </p>
+        </div>
+        <div class="card-footer">
+          <hr>
+          <div class="button-container">
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-6 ml-auto">
+                <h5>{{callDetails?.todayCallsDetails.successful}}
+                  <br>
+                  <small>المكالمات الناجحة</small>
+                </h5>
+              </div>
+              <div class="col-lg-6 col-md-6 col-6 ml-auto">
+                <h5>{{callDetails?.todayCallsDetails.all}}
+                  <br>
+                  <small>مجموع المكالمات</small>
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card" *ngIf="projectData?.name">
+        <div class="card-body">
+          <div class="row" dir="rtl">
+            <div class="col text-center">
+              المشروع: <span class="text-primary">{{projectData.name}}</span>
+            </div>
+          </div>
+          <button [hidden]='!callDetails?.link' type="button" class="btn btn-info btn-block" (click)="goToLink()">
+            اذهب للإستبيان
+          </button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">اخر مكالمات</h4>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled team-members">
+            <li *ngFor="let lastcall of callDetails?.lastFewCalls">
+              <div class="row">
+                <div class="col-md-2 col-2">
+                  <div class="avatar">
+                    <img src="assets/img/call.jpg" alt="Circle Image" class="img-circle img-no-padding img-responsive">
+                  </div>
+                </div>
+                <div class="col-md-7 col-7">
+                  {{lastcall.phone}}
+                  <br />
+                  <span class="text-success">
+                    <small>{{(lastcall.statusId == 100)? 'ناجح' : lastcall.statusId}}</small>
+                  </span>
+                </div>
+
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      <form [formGroup]="dataForm" (submit)='onSubmit()'>
+        <div class="card card-user">
+          <div class="card-header">
+            <div class="row">
+              <div class="update ml-auto mr-auto" style="margin-bottom: 10px;">
+                <button [disabled]='(radiosel === 0 && !break) || (dataForm.invalid && !break)' type="button" class="btn btn-primary "
+                  (click)='startBreak()'>{{breaktxt}}</button>
+                <div class='divider'></div>
+                <button [disabled]='!break' type="button" class="btn btn-danger" (click)='logout()'>خروج</button>
+                <div class='divider'></div>
+                <!-- <button hidden type="button" class="btn btn-primary" (click)="quotaInfoModal.show()">Qouta</button> -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card card-user">
+          <div class="card-header">
+            <h5 class="card-title">معلومات الاتصال</h5>
+          </div>
+          <div class="card-body">
+
+            <div class="row">
+              <div class="col-md-6 pr-1">
+                <div class="form-group">
+                  <label>الاسم</label>
+                  <input formControlName="Name" type="text" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-3 px-1">
+                <div class="form-group">
+                  <label>العمر</label>
+                  <select formControlName="AgeId" class="form-control" name="age" id="age">
+                    <option value=""></option>
+                    <option value="1">15-19 سنة</option>
+                    <option value="2">20-24 سنة</option>
+                    <option value="3">25-29 سنة</option>
+                    <option value="4">30-34 سنة</option>
+                    <option value="5">35-39 سنة</option>
+                    <option value="6">40-44 سنة</option>
+                    <option value="7">45-49 سنة</option>
+                    <option value="8">50-54 سنة</option>
+                    <option value="9">55-59 سنة</option>
+                    <option value="10">60-64 سنة</option>
+                    <option value="11">فوق الـ 64</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3 pl-1">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">الجنس</label>
+                  <select formControlName="GenderId" class="form-control" name="gender" id="gender">
+                    <option value=""></option>
+                    <option value="1">ذكر</option>
+                    <option value="2">انثى</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3 pr-1">
+                <div class="form-group">
+                  <label>رقم الجوال</label>
+                  <input formControlName="number" type="text" class="form-control" placeholder="#"
+                    value={{callDetails?.participant.mobile}}>
+                </div>
+              </div>
+              <div class="col-md-2 pr-1">
+                <div class="form-group">
+                  <label>المدينة</label>
+                  <select formControlName="CityId" class="form-control" name="city" id="city">
+                    <option value=""></option>
+                    <option value="1">الرياض</option>
+                    <option value="2">الدوادمي</option>
+                    <option value="3">حائل</option>
+                    <option value="4">تبوك</option>
+                    <option value="5">المدينة المنورة</option>
+                    <option value="6">ينبع</option>
+                    <option value="7">جدة</option>
+                    <option value="8">مكة</option>
+                    <option value="9">الطائف</option>
+                    <option value="10">الدمام</option>
+                    <option value="11">الخبر</option>
+                    <option value="12">الاحساء</option>
+                    <option value="13">القطيف</option>
+                    <option value="14">المجمعة</option>
+                    <option value="15">جيزان</option>
+                    <option value="16">القويعية</option>
+                    <option value="17">الباحة</option>
+                    <option value="18">نجران</option>
+                    <option value="19">الليث</option>
+                    <option value="20">الجبيل</option>
+                    <option value="21">بريده</option>
+                    <option value="22">عنيزة</option>
+                    <option value="23">الخرج</option>
+                    <option value="24">الرس</option>
+                    <option value="25">بيشه</option>
+                    <option value="26">عرعر</option>
+                    <option value="27">سكاكا</option>
+                    <option value="28">القريات</option>
+                    <option value="29">محايل</option>
+                    <option value="30">صبيا</option>
+                    <option value="31">ابو عريش</option>
+                    <option value="32">صامطة</option>
+                    <option value="33">القنفذة</option>
+                    <option value="34">حفر الباطن</option>
+                    <option value="35">ابها</option>
+                    <option value="36">خميس مشيط</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-2 pr-1">
+                <div class="form-group">
+                  <label>الجنسية</label>
+                  <select formControlName="NationalityId" class="form-control" name="nationality" id="nationality">
+                    <option value=""></option>
+                    <option value="1">سعودي</option>
+                    <option value="2">عرب</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div class="form-group">
+                  <label>موعد</label>
+                  <!-- <input formControlName="Appointment" type="datetime-local" class="form-control"> -->
+                  <input formControlName="Appointment" class="form-control"  [owlDateTimeTrigger]="dtPicker2" [owlDateTime]="dtPicker2">
+                  <owl-date-time [hour12Timer]='true' #dtPicker2></owl-date-time>
+
+                </div>
+              </div>
+            </div>
+            <br>
+            <hr>
+            <label for="name">الحالة :</label>
+            <div class="row">
+              <div class="col-md-4 pr-1">
+                <div [ngClass]="(radiosel==100)?'cus_radio sel':'cus_radio'" (click)="radiosel=100; enableControl()">
+                  ناجح</div>
+                <div [ngClass]="(radiosel==11)?'cus_radio sel':'cus_radio'" (click)="radiosel=11; enableControl()">الرقم
+                  خاطىء</div>
+                <div [ngClass]="(radiosel==101)?'cus_radio sel':'cus_radio'" (click)="radiosel=101; enableControl()">رقم
+                  مكرر</div>
+                <div [ngClass]="(radiosel==3)?'cus_radio sel':'cus_radio'" (click)="radiosel=3; enableControl()">موعد
+                </div>
+              </div>
+              <div class="col-md-4 pl-1">
+                <div [ngClass]="(radiosel==7)?'cus_radio sel':'cus_radio'"
+                  (click)="radiosel=7;quotaModal.show(); enableControl()">خارج العينة</div>
+                <div [ngClass]="(radiosel==6)?'cus_radio sel':'cus_radio'" (click)="radiosel=6; enableControl()">رفض
+                </div>
+                <div hidden [ngClass]="(radiosel==1000)?'cus_radio sel':'cus_radio'"
+                  (click)="radiosel=1000; enableControl()">Delay</div>
+                <div [ngClass]="(radiosel==1)?'cus_radio sel':'cus_radio'" (click)="radiosel=1; enableControl()">خط
+                  مشغول</div>
+                <div [ngClass]="(radiosel==12)?'cus_radio sel':'cus_radio'" (click)="radiosel=12; enableControl()">
+                  Stopped interview</div>
+              </div>
+
+              <div class="col-md-4 pl-1">
+                <div [ngClass]="(radiosel==2)?'cus_radio sel':'cus_radio'" (click)="radiosel=2; enableControl()">لا يرد
+                </div>
+                <div [ngClass]="(radiosel==4)?'cus_radio sel':'cus_radio'" (click)="radiosel=4; enableControl()">مغلق
+                </div>
+                <div [ngClass]="(radiosel==5)?'cus_radio sel':'cus_radio'" (click)="radiosel=5; enableControl()">خارج
+                  الخدمة/مفصول</div>
+                <div [ngClass]="(radiosel==13)?'cus_radio sel':'cus_radio'" (click)="radiosel=13; enableControl()">Not
+                  eligible</div>
+              </div>
+            </div>
+            <hr [hidden]='projectData?.id == 1'>
+            <div class="col-md-6 middle" [hidden]='projectData?.id == 1'>
+              <label>Notes:</label>
+              <textarea formControlName="Note" class="form-control" rows="3"></textarea>
+            </div>
+            <br>
+            <hr>
+            <div class="row">
+              <div class="update ml-auto mr-auto">
+                <button [disabled]='break || radiosel === 0 || dataForm.invalid' type="submit"
+                  class="btn btn-primary btn-round">حفظ واتصال اخر</button>
+                <div class="divider"></div>
+                <button [disabled]='!callDetails' type="button" class="btn btn-secondary" (click)='callAgain()'>اتصل مرة
+                  اخرى</button>
+                <button hidden type="button" class="btn btn-danger btn-round">restart</button>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-lg-6 ml-auto mr-auto">
+              </div>
+            </div>
+            <!-- <p hidden style="text-align: center;">* Information will be save automatically on next call</p> -->
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" bsModal #quotaModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id="dialog-static-name" class="modal-title pull-center">خارج العينة</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="quotaModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-body">
+          <div [ngClass]="(quota==8)?'cus_radio sel':'cus_radio'" (click)="quota=8;enableControl()"
+            (click)="quotaModal.hide()">جنسية و غيرها</div>
+          <div [ngClass]="(quota==77)?'cus_radio sel':'cus_radio'" (click)="quota=77;enableControl()"
+            (click)="quotaModal.hide()">المستهدف يعمل في الابحاث</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="modal fade" bsModal #quotaInfoModal="bs-modal"
+     tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id="dialog-static-name" class="modal-title pull-center">Qouta Information</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="quotaInfoModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div  class="modal-body">
+         <p>For quota information</p>
+        </div>
+      </div>
+      </div>
+  </div>
+</div> -->

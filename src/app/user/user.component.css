@@ -1,0 +1,46 @@
+.cus_radio{
+    outline: none;
+    border: 1px solid #CED4DA;
+    height: 40px;
+    /* width: 300px; */
+    border-radius: 4px;
+    margin: 0 auto;
+    margin-bottom: 8px;
+    display: block;
+    padding: 8px 10px 0px 10px;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .sel{
+    outline: none;
+    background-color: #4285F4;
+    border: 1px solid #4285F4;
+    color: #fff;
+    height: 40px;
+    /* width: 300px; */
+    border-radius: 4px;
+    margin: 0 auto;
+    margin-bottom: 8px;
+    display: block;
+    padding: 8px 10px 0px 10px;
+    text-align: center;
+    cursor: default;
+
+  }
+
+#centro {
+    height: 90%;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.middle {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
